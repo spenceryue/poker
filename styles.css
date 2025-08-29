@@ -1,0 +1,228 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  background: fixed radial-gradient(#069415aa 10%, #004e00aa 90%, #023602aa),
+    /* https://img.freepik.com/premium-photo/poker-table-felt-background-green-color-seamless-square-texture-tile-ready_463999-6175.jpg?w=360 */
+      url("./felt.avif");
+  color: white;
+  font-family: sans-serif;
+}
+
+@media (pointer: fine) {
+  :root {
+    --cursor-pointer: pointer;
+  }
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin: 0;
+  padding-top: 50px;
+  padding-bottom: 20px;
+  padding-inline: 30px;
+  overscroll-behavior: none;
+  min-height: 100vh;
+}
+
+h3 {
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 5px;
+  margin: 0 0 10px;
+  user-select: none;
+}
+
+.card {
+  background-color: #00240088;
+  background-color: white;
+  border-radius: 100vh;
+  box-shadow: 0 1px 0 1px #0003;
+  color: black;
+  cursor: var(--cursor-pointer);
+  font-weight: 300;
+  padding: 5px 7px 5px 5px;
+  position: relative;
+  &::first-letter {
+    margin-right: 3px;
+  }
+  &:active,
+  &:hover {
+    box-shadow: 0 1px 2px 1px #0008 inset;
+  }
+  > select {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    scale: 1.2;
+  }
+}
+
+#board {
+  > div {
+    display: flex;
+    gap: 10px;
+  }
+}
+
+#hand {
+  > div {
+    display: flex;
+    gap: 10px;
+  }
+}
+
+#rank {
+  > canvas {
+    border-radius: 15px;
+    height: 20vh;
+    width: 100%;
+    box-shadow: 0 1px 0 1px #0003 inset;
+    margin-bottom: 10px;
+  }
+
+  > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    > button {
+      appearance: none;
+      backdrop-filter: saturate(180%) blur(1px) opacity(0.9);
+      background: linear-gradient(#0003, transparent);
+      border: 0.5px solid #fff1;
+      border-left-width: 1px;
+      border-radius: 100vh;
+      border-right: none;
+      border-top: none;
+      box-shadow: 0 1px 0 1px #0003;
+      color: inherit;
+      cursor: var(--cursor-pointer);
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      outline: none;
+      padding: 5px 7px;
+      user-select: none;
+      white-space: nowrap;
+
+      &:active,
+      &:hover {
+        background-color: #00240088;
+        box-shadow: 0 1px 0 1px #0003 inset;
+      }
+      &::before {
+        content: "•";
+        color: var(--series-color);
+        display: inline-block;
+        margin-right: 0.7ch;
+        scale: 1.7;
+      }
+      &:nth-child(1) {
+        --series-color: black;
+      }
+      &:nth-child(2) {
+        --series-color: white;
+      }
+      &:nth-child(3) {
+        --series-color: cyan;
+      }
+      &:nth-child(4) {
+        --series-color: orange;
+      }
+      &:nth-child(5) {
+        --series-color: magenta;
+      }
+    }
+  }
+}
+
+#stats {
+  > div {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    > div {
+      padding: 10px;
+      padding-left: 15px;
+      > i {
+        font-style: normal;
+        font-size: 0.7em;
+        text-transform: uppercase;
+        &::before {
+          content: "— ";
+        }
+        color: #fffb;
+        letter-spacing: 0.5px;
+      }
+    }
+    > :nth-child(4n + 1) {
+      border-bottom-left-radius: 100vh;
+      border-top-left-radius: 100vh;
+    }
+    > :nth-child(4n + 2) {
+      border-bottom-right-radius: 100vh;
+      border-top-right-radius: 100vh;
+    }
+    > :nth-child(4n + 1),
+    > :nth-child(4n + 2) {
+      background-color: #00240088;
+    }
+    > :nth-child(2n) {
+      text-align: right;
+      font-family: Courier, monospace;
+    }
+  }
+}
+
+#phase {
+  backdrop-filter: saturate(180%) blur(4px);
+  background: linear-gradient(#0002, transparent), linear-gradient(to left, #0004 30%, transparent);
+  border: 1px solid #fff2;
+  border-left-width: 2px;
+  border-top-width: 0.5px;
+  border-right-width: 0.5px;
+  border-right-color: #fff1;
+  border-radius: 70px;
+  bottom: 20px;
+  box-shadow: 0 0 10px #0004, 0 5px 5px 10px #0001;
+  cursor: var(--cursor-pointer);
+  display: flex;
+  margin-inline: auto;
+  margin-top: auto;
+  max-width: 500px;
+  overflow-x: auto;
+  padding-block: 5px;
+  padding-inline: 30px;
+  position: sticky;
+  scroll-snap-stop: always;
+  scroll-snap-type: x mandatory;
+  user-select: none;
+  scrollbar-width: none;
+  width: 100%;
+
+  > h2 {
+    display: block;
+    flex-shrink: 0;
+    font-size: 60px;
+    margin: 0;
+    scroll-snap-align: center;
+    text-align: center;
+    user-select: none;
+    width: calc(100% + 2 * 30px);
+    > i {
+      display: inline-block;
+      font-style: normal;
+      translate: 0 -10%;
+    }
+  }
+
+  &:active,
+  &:hover {
+    background-color: #00240088;
+    box-shadow: 0 1px 0 1px #0003 inset, 0 0 10px #0004, 0 5px 5px 10px #0001;
+  }
+}

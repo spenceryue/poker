@@ -1,0 +1,166 @@
+<html>
+  <head>
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="#069415" name="theme-color" />
+    <link href="./styles.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="board">
+      <h3>BOARD</h3>
+      <div>
+        <span class="card">…</span>
+        <span class="card">…</span>
+        <span class="card">…</span>
+        <span class="card">…</span>
+        <span class="card">…</span>
+      </div>
+    </div>
+
+    <div id="hand">
+      <h3>HAND</h3>
+      <div>
+        <span class="card">…</span>
+        <span class="card">…</span>
+      </div>
+    </div>
+
+    <div id="rank">
+      <h3>RANK</h3>
+      <canvas></canvas>
+      <div>
+        <button>Board</button>
+        <button>Pre</button>
+        <button>Flop</button>
+        <button>Turn</button>
+        <button>River</button>
+      </div>
+    </div>
+
+    <div id="stats">
+      <h3>STATS</h3>
+      <div>
+        <div>μ <i>Expected rank</i></div>
+        <div>…</div>
+        <div>σ <i>Std dev rank</i></div>
+        <div>…</div>
+      </div>
+    </div>
+
+    <div id="phase">
+      <h2>Preflop 🤲</h2>
+      <h2>Flop 👀</h2>
+      <h2>Turn ↩️</h2>
+      <h2>River <i>🌊</i></h2>
+    </div>
+
+    <script>
+      "use strict";
+
+      setBoard();
+      setHand();
+      setRank();
+      setStats();
+      setPhase();
+
+      function setBoard() {
+        const element = document.getElementById("board");
+        const cards = element.querySelectorAll(".card");
+        cards.forEach((card) => setCard(card));
+      }
+
+      function setHand() {
+        const element = document.getElementById("hand");
+        const cards = element.querySelectorAll(".card");
+        cards.forEach((card) => setCard(card));
+      }
+
+      function setCard(
+        element,
+        value = (setCard.options ??= ["♠️", "♥️", "♣️", "♦️"].flatMap((suit) =>
+          ["A", "K", "Q", "J", ...Array.from({ length: 9 }, (_, i) => 10 - i)].map((value) => suit + value)
+        ))[Math.floor(setCard.options.length * Math.random())]
+      ) {
+        element.textContent = value;
+        const select = document.createElement("select");
+        select.addEventListener("change", () => setCard(element, select.value));
+        select.append(
+          ...setCard.options.map((option) =>
+            Object.assign(document.createElement("option"), {
+              selected: option === element.textContent,
+              textContent: option,
+            })
+          )
+        );
+        element.append(select);
+      }
+
+      function setRank() {
+        const element = document.getElementById("rank");
+        const canvas = element.querySelector("canvas");
+        const ctx = canvas.getContext("2d");
+
+        new ResizeObserver(onResize).observe(canvas);
+        canvas.addEventListener("pointerdown", (e) =>
+          draw({ crosshair: (e.clientX - canvas.getBoundingClientRect().left) * globalThis.devicePixelRatio })
+        );
+        canvas.addEventListener("pointermove", (e) =>
+          draw({ crosshair: (e.clientX - canvas.getBoundingClientRect().left) * globalThis.devicePixelRatio })
+        );
+
+        function draw({ crosshair = canvas.width * Math.random() } = {}) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = "#00240088";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+          // Placeholder content...
+          ["black", "white", "cyan", "orange", "magenta"].forEach((color, i) => {
+            const mean = mix(0, canvas.width, Math.random());
+            const stdDev = mix(0, canvas.width / 6, Math.random());
+
+            [...Array(7462).keys()].forEach((j) => {
+              const x = mix(0, canvas.width, j / (7462 - 1));
+              const h = mix(0, canvas.height, Math.random() * Math.exp((-1 * (x - mean) ** 2) / 2 / stdDev ** 2));
+              const w = canvas.width / 7462;
+              ctx.fillStyle = color;
+              ctx.fillRect(x, canvas.height - h, w, h);
+            });
+          });
+
+          ctx.fillStyle = "lime";
+          ctx.lineWidth = 1.5 * globalThis.devicePixelRatio;
+          ctx.fillRect(crosshair - ctx.lineWidth, 0, ctx.lineWidth, canvas.height);
+        }
+
+        function onResize() {
+          Object.assign(canvas, {
+            height: Math.ceil(canvas.clientHeight * globalThis.devicePixelRatio),
+            width: Math.ceil(canvas.clientWidth * globalThis.devicePixelRatio),
+          });
+
+          draw();
+        }
+
+        function mix(a, b, t) {
+          return a + (b - a) * t;
+        }
+      }
+
+      function setStats() {
+        const element = document.getElementById("stats").children[1];
+        // Placeholder content...
+        element.innerHTML = element.innerHTML.repeat(10 ?? 100).replaceAll("…", () => Math.random().toFixed(4));
+      }
+
+      function setPhase() {
+        const element = document.getElementById("phase");
+        element.children[0].scrollIntoView({ behavior: "instant" });
+        element.addEventListener("click", () =>
+          element.scrollBy({
+            behavior: "smooth",
+            left: element.clientWidth,
+          })
+        );
+      }
+    </script>
+  </body>
+</html>
