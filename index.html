@@ -1,7 +1,8 @@
 <html>
   <head>
+    <meta charset="UTF-8" />
     <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <meta content="#069415" name="theme-color" />
+    <meta content="#023602" name="theme-color" />
     <link href="./styles.css" rel="stylesheet" />
   </head>
   <body>
@@ -11,14 +12,28 @@
         <span class="card">…</span>
         <span class="card">…</span>
         <span class="card">…</span>
-        <span class="card">…</span>
-        <span class="card">…</span>
+        <span class="card missing">…</span>
+        <span class="card missing">…</span>
       </div>
     </div>
 
-    <div id="hand">
-      <h3>HAND</h3>
+    <div id="hands">
+      <h3>
+        HANDS
+        <button>+</button>
+      </h3>
       <div>
+        <div>1</div>
+        <span class="card">…</span>
+        <span class="card">…</span>
+      </div>
+      <div>
+        <div>2</div>
+        <span class="card">…</span>
+        <span class="card">…</span>
+      </div>
+      <div>
+        <div>3</div>
         <span class="card">…</span>
         <span class="card">…</span>
       </div>
@@ -29,10 +44,8 @@
       <canvas></canvas>
       <div>
         <button>Board</button>
-        <button>Pre</button>
-        <button>Flop</button>
-        <button>Turn</button>
-        <button>River</button>
+        <button>Hand 1</button>
+        <button>Hand 2</button>
       </div>
     </div>
 
@@ -61,6 +74,7 @@
       setRank();
       setStats();
       setPhase();
+      hideMobileAddressBar();
 
       function setBoard() {
         const element = document.getElementById("board");
@@ -69,18 +83,18 @@
       }
 
       function setHand() {
-        const element = document.getElementById("hand");
+        const element = document.getElementById("hands");
         const cards = element.querySelectorAll(".card");
         cards.forEach((card) => setCard(card));
       }
 
       function setCard(
         element,
-        value = (setCard.options ??= ["♠️", "♥️", "♣️", "♦️"].flatMap((suit) =>
-          ["A", "K", "Q", "J", ...Array.from({ length: 9 }, (_, i) => 10 - i)].map((value) => suit + value)
+        rank = (setCard.options ??= ["A", "K", "Q", "J", ...Array.from({ length: 9 }, (_, i) => 10 - i)].flatMap(
+          (rank) => ["♠️", "♥️", "♣️", "♦️"].map((suit) => `${rank} ${suit}`)
         ))[Math.floor(setCard.options.length * Math.random())]
       ) {
-        element.textContent = value;
+        element.textContent = rank;
         const select = document.createElement("select");
         select.addEventListener("change", () => setCard(element, select.value));
         select.append(
@@ -95,17 +109,29 @@
       }
 
       function setRank() {
+        const colors = ["navy", "white", "cyan", "orange", "magenta"].slice(0, 3);
         const element = document.getElementById("rank");
+        const legendItems = element.querySelectorAll("button");
         const canvas = element.querySelector("canvas");
         const ctx = canvas.getContext("2d");
 
         new ResizeObserver(onResize).observe(canvas);
-        canvas.addEventListener("pointerdown", (e) =>
-          draw({ crosshair: (e.clientX - canvas.getBoundingClientRect().left) * globalThis.devicePixelRatio })
-        );
+        canvas.addEventListener("pointerdown", (e) => {
+          canvas.setPointerCapture(e.pointerId);
+          const done = () => {
+            canvas.removeEventListener("pointerup", done);
+            canvas.removeEventListener("pointercancel", done);
+            canvas.releasePointerCapture(e.pointerId);
+          };
+          canvas.addEventListener("pointerup", done);
+          canvas.addEventListener("pointercancel", done);
+          draw({ crosshair: (e.clientX - canvas.getBoundingClientRect().left) * globalThis.devicePixelRatio });
+        });
         canvas.addEventListener("pointermove", (e) =>
           draw({ crosshair: (e.clientX - canvas.getBoundingClientRect().left) * globalThis.devicePixelRatio })
         );
+
+        legendItems.forEach((item, i) => item.style.setProperty("--color", colors[i]));
 
         function draw({ crosshair = canvas.width * Math.random() } = {}) {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -113,7 +139,7 @@
           ctx.fillRect(0, 0, canvas.width, canvas.height);
 
           // Placeholder content...
-          ["black", "white", "cyan", "orange", "magenta"].forEach((color, i) => {
+          colors.forEach((color, i) => {
             const mean = mix(0, canvas.width, Math.random());
             const stdDev = mix(0, canvas.width / 6, Math.random());
 
@@ -153,13 +179,16 @@
 
       function setPhase() {
         const element = document.getElementById("phase");
+        element.scrollLeft = parseFloat(getComputedStyle(element).paddingLeft);
         element.children[0].scrollIntoView({ behavior: "instant" });
-        element.addEventListener("click", () =>
-          element.scrollBy({
-            behavior: "smooth",
-            left: element.clientWidth,
-          })
-        );
+        element.addEventListener("click", () => console.log("TODO redeal this phase"));
+      }
+
+      function hideMobileAddressBar() {
+        window.scrollTo({
+          top: 1,
+          behavior: "instant",
+        });
       }
     </script>
   </body>
