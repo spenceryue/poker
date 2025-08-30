@@ -116,22 +116,34 @@
         const ctx = canvas.getContext("2d");
 
         new ResizeObserver(onResize).observe(canvas);
-        canvas.addEventListener("pointerdown", (e) => {
-          canvas.setPointerCapture(e.pointerId);
-          document.documentElement.style.overflow = "clip";
-          document.documentElement.style.scrollbarGutter = "stable";
-          const done = () => {
-            canvas.removeEventListener("pointerup", done);
-            canvas.removeEventListener("pointercancel", done);
-            canvas.releasePointerCapture(e.pointerId);
-            document.documentElement.style.overflow = document.documentElement.style.scrollbarGutter = null;
-          };
-          canvas.addEventListener("pointerup", done);
-          canvas.addEventListener("pointercancel", done);
-          draw({ crosshair: (e.clientX - canvas.getBoundingClientRect().left) * globalThis.devicePixelRatio });
-        });
-        canvas.addEventListener("pointermove", (e) =>
-          draw({ crosshair: (e.clientX - canvas.getBoundingClientRect().left) * globalThis.devicePixelRatio })
+        canvas.addEventListener(
+          "pointerdown",
+          (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            canvas.setPointerCapture(e.pointerId);
+            document.documentElement.style.overflow = "clip";
+            document.documentElement.style.scrollbarGutter = "stable";
+            const done = () => {
+              canvas.removeEventListener("pointerup", done);
+              canvas.removeEventListener("pointercancel", done);
+              canvas.releasePointerCapture(e.pointerId);
+              document.documentElement.style.overflow = document.documentElement.style.scrollbarGutter = null;
+            };
+            canvas.addEventListener("pointerup", done);
+            canvas.addEventListener("pointercancel", done);
+            draw({ crosshair: (e.clientX - canvas.getBoundingClientRect().left) * globalThis.devicePixelRatio });
+          },
+          { capture: true }
+        );
+        canvas.addEventListener(
+          "pointermove",
+          (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            draw({ crosshair: (e.clientX - canvas.getBoundingClientRect().left) * globalThis.devicePixelRatio });
+          },
+          { capture: true }
         );
 
         legendItems.forEach((item, i) => item.style.setProperty("--color", colors[i]));

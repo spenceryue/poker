@@ -41,14 +41,17 @@ h3 {
 }
 
 .card {
+  align-items: center;
   background-color: white;
   border-radius: 100vh;
   box-shadow: 0 1px 0 1px #0003;
   color: black;
   cursor: var(--cursor-pointer);
+  display: flex;
   font-weight: 300;
   height: 31px;
-  padding: 5px 7px 5px 5px;
+  justify-content: center;
+  padding: 5px;
   position: relative;
   &:active {
     box-shadow: 0 1px 2px 1px #0008 inset;
@@ -86,6 +89,8 @@ h3 {
     display: flex;
     justify-content: space-between;
     > button {
+      all: revert;
+      box-sizing: border-box;
       align-items: center;
       appearance: none;
       background-color: transparent;
