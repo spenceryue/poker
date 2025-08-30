@@ -1,0 +1,15 @@
+{
+  "name": "Poker Wizard",
+  "short_name": "PokerWiz",
+  "display": "standalone",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#023602",
+  "background_color": "#023602"
+}
