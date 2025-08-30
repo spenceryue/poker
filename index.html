@@ -91,17 +91,31 @@
         cards.forEach((card) => setCard(card));
       }
 
-      function setCard(
-        element,
-        rank = (setCard.options ??= ["A", "K", "Q", "J", ...Array.from({ length: 9 }, (_, i) => 10 - i)].flatMap(
-          (rank) => ["♠️", "♥️", "♣️", "♦️"].map((suit) => `${rank} ${suit}`)
-        ))[Math.floor(setCard.options.length * Math.random())]
-      ) {
-        element.textContent = rank;
+      function setCard(element, deadCards, value) {
+        setCard.options ??= ["A", "K", "Q", "J", ...Array.from({ length: 9 }, (_, i) => 10 - i)].flatMap((rank) =>
+          ["♠️", "♥️", "♣️", "♦️"].map((suit) => `${rank} ${suit}`)
+        );
+        setCard.onChange ??= (element, deadCards = getDeadCards(), value) => {
+          deadCards.delete(element.firstChild.textContent);
+          deadCards.add((element.firstChild.textContent = value ??= getRandom(getAvailableCards(deadCards))));
+          document
+            .querySelectorAll(".card:not(.missing)")
+            .forEach((card) =>
+              setCard(
+                card,
+                new Set([...deadCards].filter((c) => c !== card.firstChild.textContent)),
+                card.firstChild.textContent
+              )
+            );
+        };
+        deadCards ??= getDeadCards();
+        const availableCards = getAvailableCards(deadCards);
+        value ??= getRandom(availableCards);
+        element.textContent = value;
         const select = document.createElement("select");
-        select.addEventListener("change", () => setCard(element, select.value));
+        select.addEventListener("change", () => setCard.onChange(element, deadCards, select.value));
         select.append(
-          ...setCard.options.map((option) =>
+          ...availableCards.map((option) =>
             Object.assign(document.createElement("option"), {
               selected: option === element.textContent,
               textContent: option,
@@ -109,6 +123,17 @@
           )
         );
         element.append(select);
+        function getDeadCards() {
+          return new Set(
+            [...document.querySelectorAll(".card:not(.missing)")].map((card) => card.firstChild.textContent)
+          );
+        }
+        function getRandom(availableCards = getAvailableCards()) {
+          return availableCards[Math.floor(availableCards.length * Math.random())];
+        }
+        function getAvailableCards(deadCards = getDeadCards()) {
+          return setCard.options.filter((card) => !deadCards.has(card));
+        }
       }
 
       function setRank() {
@@ -201,11 +226,11 @@
         element.children[0].scrollIntoView({ behavior: "instant" });
         element.addEventListener("click", () => {
           if (current === 0) {
-            [...document.querySelectorAll("#hands .card")].forEach((card) => setCard(card));
+            [...document.querySelectorAll("#hands .card")].forEach((card) => setCard.onChange(card));
           } else {
             [...document.querySelectorAll("#board .card")]
               .slice(cardsShowing[current - 1], cardsShowing[current])
-              .forEach((card) => setCard(card));
+              .forEach((card) => setCard.onChange(card));
           }
         });
         let current = 0;
@@ -222,7 +247,7 @@
                 const isNew = cardsShowing[previous] <= j && j < cardsShowing[current];
                 card.classList.toggle("missing", isMissing);
                 if (isNew) {
-                  setCard(card);
+                  setCard.onChange(card);
                 }
               });
             }
