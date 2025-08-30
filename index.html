@@ -9,9 +9,9 @@
     <div id="board">
       <h3>BOARD</h3>
       <div>
-        <span class="card">…</span>
-        <span class="card">…</span>
-        <span class="card">…</span>
+        <span class="card missing">…</span>
+        <span class="card missing">…</span>
+        <span class="card missing">…</span>
         <span class="card missing">…</span>
         <span class="card missing">…</span>
       </div>
@@ -118,10 +118,13 @@
         new ResizeObserver(onResize).observe(canvas);
         canvas.addEventListener("pointerdown", (e) => {
           canvas.setPointerCapture(e.pointerId);
+          document.documentElement.style.overflow = "clip";
+          document.documentElement.style.scrollbarGutter = "stable";
           const done = () => {
             canvas.removeEventListener("pointerup", done);
             canvas.removeEventListener("pointercancel", done);
             canvas.releasePointerCapture(e.pointerId);
+            document.documentElement.style.overflow = document.documentElement.style.scrollbarGutter = null;
           };
           canvas.addEventListener("pointerup", done);
           canvas.addEventListener("pointercancel", done);
@@ -181,7 +184,37 @@
         const element = document.getElementById("phase");
         element.scrollLeft = parseFloat(getComputedStyle(element).paddingLeft);
         element.children[0].scrollIntoView({ behavior: "instant" });
-        element.addEventListener("click", () => console.log("TODO redeal this phase"));
+        element.addEventListener("click", () => {
+          if (current === 0) {
+            [...document.querySelectorAll("#hands .card")].forEach((card) => setCard(card));
+          } else {
+            [...document.querySelectorAll("#board .card")]
+              .slice(cardsShowing[current - 1], cardsShowing[current])
+              .forEach((card) => setCard(card));
+          }
+        });
+        let current = 0;
+        const cardsShowing = [0, 3, 4, 5];
+        element.addEventListener(
+          "scroll",
+          () => {
+            const i = Math.round(element.scrollLeft / element.clientWidth);
+            if (current !== i) {
+              const previous = current;
+              current = i;
+              document.querySelectorAll("#board .card").forEach((card, j) => {
+                const isMissing = j >= cardsShowing[current];
+                const isNew = cardsShowing[previous] <= j && j < cardsShowing[current];
+                card.classList.toggle("missing", isMissing);
+                if (isNew) {
+                  setCard(card);
+                }
+              });
+              console.log("scrolled to", element.children[i].textContent);
+            }
+          },
+          { passive: true }
+        );
       }
 
       function hideMobileAddressBar() {
