@@ -30,6 +30,9 @@ body {
   padding-inline: 30px;
   overscroll-behavior: none;
   min-height: 100vh;
+  &.initializing > * {
+    display: none;
+  }
 }
 
 h3 {
