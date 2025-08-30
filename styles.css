@@ -1,5 +1,7 @@
 * {
   box-sizing: border-box;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 :root {
@@ -8,6 +10,7 @@
     /* https://img.freepik.com/premium-photo/poker-table-felt-background-green-color-seamless-square-texture-tile-ready_463999-6175.jpg?w=360 */
       url("./felt.avif");
   color: white;
+  color-scheme: dark;
   font-family: sans-serif;
 }
 
@@ -35,7 +38,6 @@ h3 {
   font-weight: 400;
   letter-spacing: 5px;
   margin: 0 0 10px;
-  user-select: none;
 }
 
 .card {
@@ -160,7 +162,6 @@ h3 {
       letter-spacing: 0.5px;
       outline: none;
       padding: 5px 7px;
-      user-select: none;
       white-space: nowrap;
 
       &:active {
@@ -223,6 +224,8 @@ h3 {
     > :nth-child(2n) {
       font-family: Courier, monospace;
       justify-content: right;
+      user-select: all;
+      -webkit-user-select: all;
     }
   }
 }
@@ -249,7 +252,6 @@ h3 {
   position: sticky;
   scroll-snap-stop: always;
   scroll-snap-type: x mandatory;
-  user-select: none;
   scrollbar-width: none;
   width: 100%;
 
@@ -260,7 +262,6 @@ h3 {
     margin: 0;
     scroll-snap-align: center;
     text-align: center;
-    user-select: none;
     width: calc(100% + 2 * 30px);
     > i {
       display: inline-block;
