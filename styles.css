@@ -23,7 +23,7 @@
 body {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 20px;
   margin: 0;
   padding-top: 30px;
   padding-bottom: 20px;
