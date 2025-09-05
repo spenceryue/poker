@@ -57,7 +57,7 @@
       <div>
         <div>Straight Flush</div>
         <div>…</div>
-        <div>4 Kind</div>
+        <div>4 of a Kind</div>
         <div>…</div>
         <div>Full House</div>
         <div>…</div>
@@ -65,7 +65,7 @@
         <div>…</div>
         <div>Straight</div>
         <div>…</div>
-        <div>3 Kind</div>
+        <div>3 of a Kind</div>
         <div>…</div>
         <div>2 Pair</div>
         <div>…</div>
@@ -231,7 +231,7 @@
       function setStats() {
         const element = document.getElementById("stats").children[1];
         // Placeholder content...
-        element.innerHTML = element.innerHTML.replaceAll("…", () => `${(Math.random() * 100).toFixed(3)} %`);
+        element.innerHTML = element.innerHTML.replaceAll("…", () => `${(Math.random() * 100).toFixed(2)} %`);
       }
 
       function setPhase() {
