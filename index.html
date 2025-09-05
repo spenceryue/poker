@@ -20,9 +20,9 @@
       </div>
     </div>
 
-    <div id="hands">
+    <div id="players">
       <h3>
-        HANDS
+        PLAYERS
         <button>+</button>
       </h3>
       <div>
@@ -42,22 +42,36 @@
       </div>
     </div>
 
-    <div id="rank">
-      <h3>RANK</h3>
+    <div id="spread">
+      <h3>SPREAD</h3>
       <canvas></canvas>
       <div>
         <button>Board</button>
-        <button>Hand 1</button>
-        <button>Hand 2</button>
+        <button>P1</button>
+        <button>P2</button>
       </div>
     </div>
 
     <div id="stats">
       <h3>STATS</h3>
       <div>
-        <div>μ <i>Expected rank</i></div>
+        <div>Straight Flush</div>
         <div>…</div>
-        <div>σ <i>Std dev rank</i></div>
+        <div>4 Kind</div>
+        <div>…</div>
+        <div>Full House</div>
+        <div>…</div>
+        <div>Flush</div>
+        <div>…</div>
+        <div>Straight</div>
+        <div>…</div>
+        <div>3 Kind</div>
+        <div>…</div>
+        <div>2 Pair</div>
+        <div>…</div>
+        <div>1 Pair</div>
+        <div>…</div>
+        <div>High Card</div>
         <div>…</div>
       </div>
     </div>
@@ -73,8 +87,8 @@
       "use strict";
 
       setBoard();
-      setHand();
-      setRank();
+      setPlayers();
+      setSpread();
       setStats();
       setPhase();
       doneInitializing();
@@ -85,8 +99,8 @@
         cards.forEach((card) => setCard(card));
       }
 
-      function setHand() {
-        const element = document.getElementById("hands");
+      function setPlayers() {
+        const element = document.getElementById("players");
         const cards = element.querySelectorAll(".card");
         cards.forEach((card) => setCard(card));
       }
@@ -136,9 +150,9 @@
         }
       }
 
-      function setRank() {
+      function setSpread() {
         const colors = ["navy", "white", "cyan", "orange", "magenta"].slice(0, 3);
-        const element = document.getElementById("rank");
+        const element = document.getElementById("spread");
         const legendItems = element.querySelectorAll("button");
         const canvas = element.querySelector("canvas");
         const ctx = canvas.getContext("2d");
@@ -217,7 +231,7 @@
       function setStats() {
         const element = document.getElementById("stats").children[1];
         // Placeholder content...
-        element.innerHTML = element.innerHTML.repeat(10 ?? 100).replaceAll("…", () => Math.random().toFixed(4));
+        element.innerHTML = element.innerHTML.replaceAll("…", () => `${(Math.random() * 100).toFixed(3)} %`);
       }
 
       function setPhase() {
@@ -226,7 +240,7 @@
         element.children[0].scrollIntoView({ behavior: "instant" });
         element.addEventListener("click", () => {
           if (current === 0) {
-            [...document.querySelectorAll("#hands .card")].forEach((card) => setCard.onChange(card));
+            [...document.querySelectorAll("#players .card")].forEach((card) => setCard.onChange(card));
           } else {
             [...document.querySelectorAll("#board .card")]
               .slice(cardsShowing[current - 1], cardsShowing[current])

@@ -88,7 +88,7 @@ h3 {
   }
 }
 
-#hands {
+#players {
   > h3 {
     display: flex;
     justify-content: space-between;
@@ -97,9 +97,9 @@ h3 {
       appearance: none;
       background-color: transparent;
       border-radius: 100vh;
-      border: 1px solid #fffd;
+      border: 1px solid #fffb;
       box-sizing: border-box;
-      color: #fffd;
+      color: #fffb;
       cursor: var(--cursor-pointer);
       display: flex;
       font-size: 0;
@@ -141,8 +141,8 @@ h3 {
     > :first-child {
       align-items: center;
       border-radius: 100vh;
-      border: 1px solid #fffd;
-      color: #fffd;
+      border: 1px solid #fffb;
+      color: #fffb;
       display: flex;
       flex-shrink: 0;
       font-size: 12px;
@@ -154,7 +154,7 @@ h3 {
   }
 }
 
-#rank {
+#spread {
   > canvas {
     border-radius: 15px;
     height: 20vh;
@@ -214,22 +214,12 @@ h3 {
       display: flex;
       padding: 10px;
       padding-left: 15px;
-      > i {
-        font-style: normal;
-        font-size: 0.7em;
-        text-transform: uppercase;
-        &::before {
-          background-color: currentColor;
-          content: "";
-          display: inline-block;
-          height: 0.5px;
-          margin-inline: 1ch;
-          translate: 0 -3.5px;
-          width: 8px;
-        }
-        color: #fffb;
-        letter-spacing: 0.5px;
-      }
+    }
+    > :nth-child(2n + 1) {
+      color: #fffb;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
     > :nth-child(4n + 1) {
       border-bottom-left-radius: 100vh;
@@ -244,6 +234,7 @@ h3 {
       background-color: #00240088;
     }
     > :nth-child(2n) {
+      color: #fffd;
       font-family: Courier, monospace;
       justify-content: right;
       user-select: all;
