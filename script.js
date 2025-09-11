@@ -12,10 +12,11 @@ choose5.init = () => {
     for (const suit of Array(4).keys()) {
       const index = superFormula(
         suit + 4 * rank,
-        suit + 4 * (rank - 1),
-        suit + 4 * (rank - 2),
-        suit + 4 * (rank - 3),
-        suit + 4 * (rank - 4)
+        suit + 4 * (rank + 1),
+        suit + 4 * (rank + 2),
+        suit + 4 * (rank + 3),
+        suit + 4 * (rank + 4)  /*Howard: changed rank - 1/2/3/4 to rank + 1/2/3/4, since A has rank index 0, 2 is 12) */
+          //also, need to add if rank + 4 > 12, then use 0, for the 5432A straightflush 
       );
       choose5[index] = ranking;
     }
@@ -37,6 +38,8 @@ choose5.init = () => {
         );
         choose5[index] = ranking;
       }
+
+      //what if rank > kicker, like 3333Q?
 
       ranking++;
     }
