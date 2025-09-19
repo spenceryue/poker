@@ -376,6 +376,52 @@ choose5.init = () => {
   }
 };
 
+choose7.init = () => {
+  let i = 0;
+  for (let g = 6; g < 52; ++g) {
+    for (let f = 5; f < g; ++f) {
+      for (let e = 4; e < f; ++e) {
+        for (let d = 3; d < e; ++d) {
+          for (let c = 2; c < d; ++c) {
+            for (let b = 1; b < c; ++b) {
+              for (let a = 0; a < b; ++a) {
+                //for loop to iterate C(7,5), compare ranking(0-7461), choose highest(smallest)
+                let r = 7461 ?? category.length - 1;
+                for (const _7choose5 of [
+                  [a, b, c, d, e],
+                  [a, b, c, d, f],
+                  [a, b, c, d, g],
+                  [a, b, c, e, f],
+                  [a, b, c, e, g],
+                  [a, b, c, f, g],
+                  [a, b, d, e, f],
+                  [a, b, d, e, g],
+                  [a, b, d, f, g],
+                  [a, b, e, f, g],
+                  [a, c, d, e, f],
+                  [a, c, d, e, g],
+                  [a, c, d, f, g],
+                  [a, c, e, f, g],
+                  [a, d, e, f, g],
+                  [b, c, d, e, f],
+                  [b, c, d, e, g],
+                  [b, c, d, f, g],
+                  [b, c, e, f, g],
+                  [b, d, e, f, g],
+                  [c, d, e, f, g],
+                ]) {
+                  r = Math.min(r, choose5[choose5.index(..._7choose5)]);
+                }
+                choose7[i++] = r;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+};
+
 choose5.index = (a, b, c, d, e) => nChooseK[a][5] + nChooseK[b][4] + nChooseK[c][3] + nChooseK[d][2] + nChooseK[e][1];
 
 choose7.index = (a, b, c, d, e, f, g) =>
@@ -384,6 +430,8 @@ choose7.index = (a, b, c, d, e, f, g) =>
 nChooseK.init();
 
 choose5.init();
+
+// choose7.init()
 
 const card = ["A", "K", "Q", "J", "10", "9", "8", "7", "6", "5", "4", "3", "2"].flatMap((rank) =>
   ["♠️", "♥️", "♦️", "♣️"].map((suit) => rank + suit)
@@ -405,4 +453,4 @@ HERE: for (let e = 4; e < 52; ++e) {
     }
   }
 }
-console.log(results);
+//console.log(results);
