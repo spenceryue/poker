@@ -108,7 +108,7 @@
 
       function setCard(element, deadCards, value) {
         setCard.options ??= ["A", "K", "Q", "J", ...Array.from({ length: 9 }, (_, i) => 10 - i)].flatMap((rank) =>
-          ["♠️", "♥️", "♣️", "♦️"].map((suit) => `${rank} ${suit}`)
+          ["♠️", "♥️", "♦️", "♣️"].map((suit) => `${rank} ${suit}`)
         );
         setCard.onChange ??= (element, deadCards = getDeadCards(), value) => {
           deadCards.delete(element.firstChild.textContent);
