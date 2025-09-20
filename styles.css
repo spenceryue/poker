@@ -8,7 +8,7 @@
   background-color: #023602;
   background: fixed radial-gradient(#069415aa 10%, #004e00aa 90%, #023602aa),
     /* https://img.freepik.com/premium-photo/poker-table-felt-background-green-color-seamless-square-texture-tile-ready_463999-6175.jpg?w=360 */
-      url("./felt.avif");
+      url("./assets/felt.avif");
   color: white;
   color-scheme: dark;
   font-family: sans-serif;

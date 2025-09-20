@@ -1,0 +1,12 @@
+{
+  "name": "poker-wizard",
+  "scripts": {
+    "postinstall": "cp ./node_modules/@oneidentity/zstd-js/wasm/decompress/index.js ./assets/zstd.js"
+  },
+  "devDependencies": {
+    "prettier": "3.6.2"
+  },
+  "dependencies": {
+    "@oneidentity/zstd-js": "1.0.3"
+  }
+}
