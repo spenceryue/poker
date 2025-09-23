@@ -1,6 +1,7 @@
 {
   "name": "poker-wizard",
   "scripts": {
+    "compress": "node choose7.js",
     "postinstall": "cp ./node_modules/@oneidentity/zstd-js/wasm/decompress/index.js ./assets/zstd.js",
     "start": "serve"
   },

@@ -1,95 +1,98 @@
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" name="viewport" />
-    <meta content="#023602" name="theme-color" />
-    <link href="./styles.css" rel="stylesheet" />
-    <link rel="manifest" href="./manifest.json" />
-    <link rel="icon" type="image/png" href="./assets/icon.png" />
-    <title>Poker Wizard</title>
-  </head>
-  <body class="initializing">
-    <div id="board">
-      <h3>BOARD</h3>
-      <div>
-        <span class="card missing">…</span>
-        <span class="card missing">…</span>
-        <span class="card missing">…</span>
-        <span class="card missing">…</span>
-        <span class="card missing">…</span>
-      </div>
-    </div>
 
-    <div id="players">
-      <h3>
-        PLAYERS
-        <button>+</button>
-      </h3>
-      <div>
-        <div>1</div>
-        <span class="card">…</span>
-        <span class="card">…</span>
-      </div>
-      <div>
-        <div>2</div>
-        <span class="card">…</span>
-        <span class="card">…</span>
-      </div>
-      <div>
-        <div>3</div>
-        <span class="card">…</span>
-        <span class="card">…</span>
-      </div>
-    </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" name="viewport" />
+  <meta content="#023602" name="theme-color" />
+  <link href="./styles.css" rel="stylesheet" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" type="image/png" href="./assets/icon.png" />
+  <title>Poker Wizard</title>
+</head>
 
-    <div id="spread">
-      <h3>SPREAD</h3>
-      <canvas></canvas>
-      <div>
-        <button>Board</button>
-        <button>P1</button>
-        <button>P2</button>
-      </div>
+<body class="initializing">
+  <div id="board">
+    <h3>BOARD</h3>
+    <div>
+      <span class="card missing">…</span>
+      <span class="card missing">…</span>
+      <span class="card missing">…</span>
+      <span class="card missing">…</span>
+      <span class="card missing">…</span>
     </div>
+  </div>
 
-    <div id="stats">
-      <h3>STATS</h3>
-      <div>
-        <div>Straight Flush</div>
-        <div>…</div>
-        <div>4 of a Kind</div>
-        <div>…</div>
-        <div>Full House</div>
-        <div>…</div>
-        <div>Flush</div>
-        <div>…</div>
-        <div>Straight</div>
-        <div>…</div>
-        <div>3 of a Kind</div>
-        <div>…</div>
-        <div>2 Pair</div>
-        <div>…</div>
-        <div>1 Pair</div>
-        <div>…</div>
-        <div>High Card</div>
-        <div>…</div>
-      </div>
+  <div id="players">
+    <h3>
+      PLAYERS
+      <button>+</button>
+    </h3>
+    <div>
+      <div>1</div>
+      <span class="card">…</span>
+      <span class="card">…</span>
     </div>
-
-    <div id="phase">
-      <h2>Preflop 🤲</h2>
-      <h2>Flop 👀</h2>
-      <h2>Turn ↩️</h2>
-      <h2>River <i>🌊</i></h2>
+    <div>
+      <div>2</div>
+      <span class="card">…</span>
+      <span class="card">…</span>
     </div>
+    <div>
+      <div>3</div>
+      <span class="card">…</span>
+      <span class="card">…</span>
+    </div>
+  </div>
 
-    <script type="importmap">
+  <div id="spread">
+    <h3>SPREAD</h3>
+    <canvas></canvas>
+    <div>
+      <button>Board</button>
+      <button>P1</button>
+      <button>P2</button>
+    </div>
+  </div>
+
+  <div id="stats">
+    <h3>STATS</h3>
+    <div>
+      <div>Straight Flush</div>
+      <div>…</div>
+      <div>4 of a Kind</div>
+      <div>…</div>
+      <div>Full House</div>
+      <div>…</div>
+      <div>Flush</div>
+      <div>…</div>
+      <div>Straight</div>
+      <div>…</div>
+      <div>3 of a Kind</div>
+      <div>…</div>
+      <div>2 Pair</div>
+      <div>…</div>
+      <div>1 Pair</div>
+      <div>…</div>
+      <div>High Card</div>
+      <div>…</div>
+    </div>
+  </div>
+
+  <div id="phase">
+    <h2>Preflop 🤲</h2>
+    <h2>Flop 👀</h2>
+    <h2>Turn ↩️</h2>
+    <h2>River <i>🌊</i></h2>
+  </div>
+
+  <script type="importmap">
       {
         "imports": {
-          "@oneidentity/zstd-js/wasm/decompress": "./assets/zstd.js"
+          "@oneidentity/zstd-js/wasm/decompress/index.js": "./assets/zstd.js"
         }
       }
     </script>
-    <script src="./app.js" type="module"></script>
-  </body>
+  <script src="./app.js" type="module"></script>
+</body>
+
 </html>
