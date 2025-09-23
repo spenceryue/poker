@@ -4,7 +4,7 @@ export const codec = IS_BROWSER ? {
     decompress:
         async (filePath) => {
             const { ZstdInit, ZstdSimple } = await import("@oneidentity/zstd-js/wasm/decompress")
-            const [bytes] = await Promise.all([fetch(`./src/${filePath}`).then((r) => r.bytes()), ZstdInit()])
+            const [bytes] = await Promise.all([fetch(`./app/${filePath}`).then((r) => r.bytes()), ZstdInit()])
             return ZstdSimple.decompress(bytes).buffer
         },
 } : {

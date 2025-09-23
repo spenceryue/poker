@@ -360,7 +360,7 @@ choose5.init = atMostOnce(async (skip = IS_BROWSER) => {
         }
     }
 
-    await codec.compress("../assets/choose5.category.zst", choose5)
+    await codec.compress("../assets/choose5.category.zst", choose5.category)
 
     await codec.compress("../assets/choose5.zst", choose5)
 })
