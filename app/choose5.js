@@ -1,9 +1,17 @@
-import { category } from "./category.js";
+import { IS_BROWSER } from "./IS_BROWSER.js";
+import { atMostOnce } from "./atMostOnce.js";
 import { nChooseK } from "./nChooseK.js";
+import { codec } from './codec.js'
 
+export const choose5 = new Uint16Array(await codec.decompress?.("../assets/choose5.zst") ?? 2598960 ?? nChooseK[52][5]);
 
-export const choose5 = new Uint16Array(2598960 ?? nChooseK[52][5]);
-choose5.init = () => {
+choose5.category = new Uint8Array(await codec.decompress?.("../assets/choose5.category.zst") ?? 7462)
+
+choose5.init = atMostOnce(async (skip = IS_BROWSER) => {
+    if (skip) { return }
+
+    nChooseK.init()
+
     let ranking = 0;
 
     STRAIGHT_FLUSH: {
@@ -26,7 +34,7 @@ choose5.init = () => {
                     )] = ranking;
             }
 
-            category[ranking++] = 0;
+            choose5.category[ranking++] = 0;
         }
     }
 
@@ -43,7 +51,7 @@ choose5.init = () => {
                         : choose5.index(suit + 4 * kicker, 0 + 4 * rank, 1 + 4 * rank, 2 + 4 * rank, 3 + 4 * rank)] = ranking;
                 }
 
-                category[ranking++] = 1;
+                choose5.category[ranking++] = 1;
             }
         }
     }
@@ -87,7 +95,7 @@ choose5.init = () => {
                     }
                 }
 
-                category[ranking++] = 2;
+                choose5.category[ranking++] = 2;
             }
         }
     }
@@ -109,7 +117,7 @@ choose5.init = () => {
                                 choose5[choose5.index(suit + 4 * r0, suit + 4 * r1, suit + 4 * r2, suit + 4 * r3, suit + 4 * r4)] =
                                     ranking;
                             }
-                            category[ranking++] = 3;
+                            choose5.category[ranking++] = 3;
                         }
                     }
                 }
@@ -148,7 +156,7 @@ choose5.init = () => {
                     }
                 }
             }
-            category[ranking++] = 4;
+            choose5.category[ranking++] = 4;
         }
     }
 
@@ -193,7 +201,7 @@ choose5.init = () => {
                             }
                         }
                     }
-                    category[ranking++] = 5;
+                    choose5.category[ranking++] = 5;
                 }
             }
         }
@@ -249,7 +257,7 @@ choose5.init = () => {
                             }
                         }
                     }
-                    category[ranking++] = 6;
+                    choose5.category[ranking++] = 6;
                 }
             }
         }
@@ -309,7 +317,7 @@ choose5.init = () => {
                                 }
                             }
                         }
-                        category[ranking++] = 7;
+                        choose5.category[ranking++] = 7;
                     }
                 }
             }
@@ -344,12 +352,17 @@ choose5.init = () => {
                                     }
                                 }
                             }
-                            category[ranking++] = 8;
+                            choose5.category[ranking++] = 8;
                         }
                     }
                 }
             }
         }
     }
-};
+
+    await codec.compress("../assets/choose5.category.zst", choose5)
+
+    await codec.compress("../assets/choose5.zst", choose5)
+})
+
 choose5.index = (a, b, c, d, e) => nChooseK[a][1] + nChooseK[b][2] + nChooseK[c][3] + nChooseK[d][4] + nChooseK[e][5];

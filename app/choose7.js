@@ -1,16 +1,17 @@
-import { ZstdInit, ZstdSimple } from "@oneidentity/zstd-js/wasm/decompress/index.js";
 import { choose5 } from "./choose5.js";
 import { nChooseK } from "./nChooseK.js";
+import { atMostOnce } from "./atMostOnce.js";
+import { IS_BROWSER } from "./IS_BROWSER.js";
+import { codec } from './codec.js'
 
-export const choose7 =
-    globalThis.process ?
-        new Uint16Array(133_784_560 ?? nChooseK[52][7]) :
-        (await Promise.all([fetch("./assets/choose7.zst").then((r) => r.bytes()), ZstdInit()]).then(
-            ([bytes]) => new Uint16Array(ZstdSimple.decompress(bytes).buffer)
-        ));
+export const choose7 = new Uint16Array(await codec.decompress?.("../assets/choose7.zst") ?? 133_784_560 ?? nChooseK[52][7])
 
+choose7.init = atMostOnce(async (skip = IS_BROWSER) => {
+    if (skip) { return }
 
-choose7.init = () => {
+    nChooseK.init()
+    await choose5.init()
+
     let i = 0;
     for (let g = 6; g < 52; ++g) {
         for (let f = 5; f < g; ++f) {
@@ -20,7 +21,7 @@ choose7.init = () => {
                         for (let b = 1; b < c; ++b) {
                             for (let a = 0; a < b; ++a) {
                                 //for loop to iterate C(7,5), compare ranking(0-7461), choose highest(smallest)
-                                let ranking = 7461 ?? category.length - 1;
+                                let ranking = 7461 ?? choose5.category.length - 1;
                                 for (const _7choose5 of [
                                     [a, b, c, d, e],
                                     [a, b, c, d, f],
@@ -48,7 +49,7 @@ choose7.init = () => {
                                 }
                                 choose7[i++] = ranking;
                                 if (i % 10e6 === 0) {
-                                    console.log(((i / (choose7.length - 1)) * 100).toFixed(1) + "%");
+                                    console.log("choose7.init", ((i / (choose7.length - 1)) * 100).toFixed(1) + "%");
                                 }
                             }
                         }
@@ -57,7 +58,9 @@ choose7.init = () => {
             }
         }
     }
-};
+
+    await codec.compress("../assets/choose7.zst", choose7)
+});
 
 
 choose7.index = (a, b, c, d, e, f, g) =>
@@ -97,11 +100,4 @@ choose7.spread = (players = [[0, 1], [4, 5], [8, 9]]) => {
     }
 }
 
-COMPRESS: if (globalThis.process) {
-    choose7.init();
-    const { ZstdInit, ZstdSimple } = await import("@oneidentity/zstd-js")
-    await ZstdInit()
-    const compressed = ZstdSimple.compress(new Uint8Array(choose7.buffer))
-    require("fs").writeFileSync("./assets/choose7.zst", compressed);
-}
 
